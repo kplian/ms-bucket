@@ -57,8 +57,11 @@ jobs:
     needs: build-and-push
     if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
-    # Selecciona el entorno de GitHub Secrets para Test
     environment: test
+    # 1. PERMISOS REQUERIDOS PARA DESCARGAR LA IMAGEN
+    permissions:
+      contents: read
+      packages: read
 
     steps:
       - name: Checkout del código
@@ -69,13 +72,15 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+          # 2. PROTECCIÓN DEL PUERTO SSH
+          ssh-keyscan -p ${{ secrets.DEPLOY_PORT || '22' }} ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
 
       - name: Crear Contexto de Docker
         run: |
           docker context create vps-remote --docker "host=ssh://${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PORT }}"
           docker context use vps-remote
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          # 3. LOGIN EXPLÍCITO EN EL VPS REMOTO
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker --context vps-remote login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Generar .env para TEST
         run: |
@@ -103,8 +108,11 @@ jobs:
     needs: build-and-push
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    # Selecciona el entorno de GitHub Secrets para Producción
     environment: production
+    # 1. PERMISOS REQUERIDOS PARA DESCARGAR LA IMAGEN
+    permissions:
+      contents: read
+      packages: read
 
     steps:
       - name: Checkout del código
@@ -115,13 +123,15 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+          # 2. PROTECCIÓN DEL PUERTO SSH
+          ssh-keyscan -p ${{ secrets.DEPLOY_PORT || '22' }} ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
 
       - name: Crear Contexto de Docker
         run: |
           docker context create vps-remote --docker "host=ssh://${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PORT }}"
           docker context use vps-remote
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          # 3. LOGIN EXPLÍCITO EN EL VPS REMOTO
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker --context vps-remote login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Generar .env para PRODUCCIÓN
         run: |
