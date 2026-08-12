@@ -95,6 +95,18 @@ jobs:
           DB_PASSWORD=${{ secrets.DB_PASSWORD }}
           APP_INTERNAL_PORT=${{ secrets.APP_INTERNAL_PORT }}
           APP_EXTERNAL_PORT=${{ secrets.APP_EXTERNAL_PORT }}
+          STORAGE_TYPE=${{ secrets.STORAGE_TYPE }}
+          AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION=${{ secrets.AWS_REGION }}
+          AWS_S3_ENDPOINT=${{ secrets.AWS_S3_ENDPOINT }}
+          R2_ACCESS_KEY_ID=${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY=${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ENDPOINT=${{ secrets.R2_ENDPOINT }}
+          MINIO_ACCESS_KEY=${{ secrets.MINIO_ACCESS_KEY }}
+          MINIO_SECRET_KEY=${{ secrets.MINIO_SECRET_KEY }}
+          MINIO_ENDPOINT=${{ secrets.MINIO_ENDPOINT }}
+          MINIO_EXTERNAL_ENDPOINT=${{ secrets.MINIO_EXTERNAL_ENDPOINT }}
           EOF
 
       - name: Desplegar en Ambiente Test
@@ -146,6 +158,18 @@ jobs:
           DB_PASSWORD=${{ secrets.DB_PASSWORD }}
           APP_INTERNAL_PORT=${{ secrets.APP_INTERNAL_PORT }}
           APP_EXTERNAL_PORT=${{ secrets.APP_EXTERNAL_PORT }}
+          STORAGE_TYPE=${{ secrets.STORAGE_TYPE }}
+          AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION=${{ secrets.AWS_REGION }}
+          AWS_S3_ENDPOINT=${{ secrets.AWS_S3_ENDPOINT }}
+          R2_ACCESS_KEY_ID=${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY=${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ENDPOINT=${{ secrets.R2_ENDPOINT }}
+          MINIO_ACCESS_KEY=${{ secrets.MINIO_ACCESS_KEY }}
+          MINIO_SECRET_KEY=${{ secrets.MINIO_SECRET_KEY }}
+          MINIO_ENDPOINT=${{ secrets.MINIO_ENDPOINT }}
+          MINIO_EXTERNAL_ENDPOINT=${{ secrets.MINIO_EXTERNAL_ENDPOINT }}
           EOF
 
       - name: Desplegar en Ambiente Producción
