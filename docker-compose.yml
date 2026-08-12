@@ -64,12 +64,12 @@ services:
 
     networks:
       - nt_microservices
-      - nt_infra
+      - nt_databases
 
     restart: unless-stopped
 
 networks:
   nt_microservices:
     external: true
-  nt_infra:
+  nt_databases:
     external: true
