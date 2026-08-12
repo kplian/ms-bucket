@@ -1,0 +1,2 @@
+# OpenTelemetry
+Manejo de errores

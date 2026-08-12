@@ -1,0 +1,491 @@
+# Postman Collection
+
+Copy the JSON block below and save it as a `.json` file (e.g. `ms-bucket-collection.json`), or simply copy the entire JSON text and in Postman go to **Import -> Raw text** and paste it there. Postman will automatically recognize it as a v2.1.0 Collection.
+
+Note: This collection automatically includes a `baseUrl` variable set to `http://localhost:8089/api/v1` for your convenience (matching the new port mapped in `application.properties`). We've added the new S3 features: **Upload a File (Multipart)** and **Get Presigned URL**.
+
+```json
+{
+  "info": {
+    "name": "ms-bucket API",
+    "description": "Collection for the ms-bucket microservice endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8089/api/v1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Files",
+      "item": [
+        {
+          "name": "Get All Files",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es-ES"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/files",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "files"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get File By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es-ES"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/files/YOUR-FILE-UUID-HERE",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "files",
+                "YOUR-FILE-UUID-HERE"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Presigned URL",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es-ES"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/files/YOUR-FILE-UUID-HERE/presigned-url",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "files",
+                "YOUR-FILE-UUID-HERE",
+                "presigned-url"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Upload a File (Multipart)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es-ES"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "moduleCode",
+                  "value": "CRM",
+                  "type": "text"
+                },
+                {
+                  "key": "entityName",
+                  "value": "Customer",
+                  "type": "text"
+                },
+                {
+                  "key": "entityId",
+                  "value": "12345",
+                  "type": "text"
+                },
+                {
+                  "key": "bucketName",
+                  "value": "my-test-bucket",
+                  "type": "text"
+                },
+                {
+                  "key": "securityLevelCode",
+                  "value": "PUBLIC",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/files/upload",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "files",
+                "upload"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create a File (Metadata Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "es-ES"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"moduleCode\": \"CRM\",\n    \"entityName\": \"Customer\",\n    \"entityId\": 12345,\n    \"fileName\": \"document.pdf\",\n    \"originalName\": \"signed_contract_final.pdf\",\n    \"contentType\": \"application/pdf\",\n    \"fileSize\": 1024000,\n    \"bucketName\": \"my-test-bucket\",\n    \"objectKey\": \"crm/12345/document.pdf\",\n    \"version\": 1,\n    \"securityLevelCode\": \"PUBLIC\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/files",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "files"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update a File",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "es-ES"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"moduleCode\": \"CRM\",\n    \"entityName\": \"Customer\",\n    \"entityId\": 12345,\n    \"fileName\": \"document_v2.pdf\",\n    \"originalName\": \"signed_contract_v2.pdf\",\n    \"contentType\": \"application/pdf\",\n    \"fileSize\": 1500000,\n    \"bucketName\": \"my-test-bucket\",\n    \"objectKey\": \"crm/12345/document_v2.pdf\",\n    \"version\": 2,\n    \"securityLevelCode\": \"CONFIDENTIAL\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/files/YOUR-FILE-UUID-HERE",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "files",
+                "YOUR-FILE-UUID-HERE"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete a File",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es-ES"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/files/YOUR-FILE-UUID-HERE",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "files",
+                "YOUR-FILE-UUID-HERE"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "File Tags",
+      "item": [
+        {
+          "name": "Get All File Tags",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es-ES"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/file-tags",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "file-tags"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get File Tag By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es-ES"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/file-tags/YOUR-FILE-TAG-UUID-HERE",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "file-tags",
+                "YOUR-FILE-TAG-UUID-HERE"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create a File Tag",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "es-ES"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"fileId\": \"YOUR-FILE-UUID-HERE\",\n    \"tagCode\": \"CONTRACT\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/file-tags",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "file-tags"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update a File Tag",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "es-ES"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"fileId\": \"YOUR-FILE-UUID-HERE\",\n    \"tagCode\": \"ARCHIVED\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/file-tags/YOUR-FILE-TAG-UUID-HERE",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "file-tags",
+                "YOUR-FILE-TAG-UUID-HERE"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete a File Tag",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es-ES"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/file-tags/YOUR-FILE-TAG-UUID-HERE",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "file-tags",
+                "YOUR-FILE-TAG-UUID-HERE"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "File Versions",
+      "item": [
+        {
+          "name": "Get All File Versions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es-ES"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/file-versions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "file-versions"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get File Version By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es-ES"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/file-versions/YOUR-FILE-VERSION-UUID-HERE",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "file-versions",
+                "YOUR-FILE-VERSION-UUID-HERE"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create a File Version",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "es-ES"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"fileId\": \"YOUR-FILE-UUID-HERE\",\n    \"version\": 1,\n    \"objectKey\": \"crm/12345/document_v1.pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/file-versions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "file-versions"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update a File Version",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept-Language",
+                "value": "es-ES"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"fileId\": \"YOUR-FILE-UUID-HERE\",\n    \"version\": 2,\n    \"objectKey\": \"crm/12345/document_v2.pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/file-versions/YOUR-FILE-VERSION-UUID-HERE",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "file-versions",
+                "YOUR-FILE-VERSION-UUID-HERE"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete a File Version",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "es-ES"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/file-versions/YOUR-FILE-VERSION-UUID-HERE",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "file-versions",
+                "YOUR-FILE-VERSION-UUID-HERE"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```

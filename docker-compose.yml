@@ -1,0 +1,75 @@
+services:
+  ms-bucket:
+    image: ghcr.io/${GITHUB_REPOSITORY}:${IMAGE_TAG:-latest}
+    container_name: ${CONTAINER_NAME:-con-kp-ms-bucket}
+    environment:
+      # Puerto de la aplicación
+      - PORT=${APP_INTERNAL_PORT}
+      - CORS_ORIGINS=${ALLOWED_ORIGINS}
+
+      # Configuración de base de datos
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+
+      # Configuracion de KAFKA
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092,kafka:9093
+
+      # Para desarrollo: ejecutar import.sql con datos de prueba
+      - DB_GENERATION=drop-and-create
+      - DB_IMPORT_SCRIPT=import.sql
+
+      # =========================
+      # OTEL (Observabilidad)
+      # =========================
+      - OTEL_ENABLED=${OTEL_ENABLED}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+      - OTEL_SERVICE_NAME=${OTEL_SERVICE_NAME}
+
+      # =========================
+      # STORAGE TYPE
+      # =========================
+      - STORAGE_TYPE=${STORAGE_TYPE}
+
+      # =========================
+      # AWS S3
+      # =========================
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - AWS_S3_ENDPOINT=${AWS_S3_ENDPOINT}
+
+      # =========================
+      # CLOUDFLARE R2
+      # =========================
+      - R2_ACCESS_KEY_ID=${R2_ACCESS_KEY_ID}
+      - R2_SECRET_ACCESS_KEY=${R2_SECRET_ACCESS_KEY}
+      - R2_ENDPOINT=${R2_ENDPOINT}
+
+      # =========================
+      # MINIO
+      # =========================
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+      # Internal endpoint: used for uploads (direct container-to-container)
+      - MINIO_ENDPOINT=${MINIO_ENDPOINT}
+      # External endpoint: used for presigned URLs (browser-accessible URL)
+      - MINIO_EXTERNAL_ENDPOINT=${MINIO_EXTERNAL_ENDPOINT}
+
+    ports:
+      - "${APP_EXTERNAL_PORT}:${APP_INTERNAL_PORT}"
+
+    networks:
+      - nt_microservices
+      - nt_infra
+
+    restart: unless-stopped
+
+networks:
+  nt_microservices:
+    external: true
+  nt_infra:
+    external: true

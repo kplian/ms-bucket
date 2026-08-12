@@ -1,0 +1,33 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------< com.kplian.bucket:ms-bucket >---------------------
+[INFO] Building ms-bucket 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- quarkus:3.26.1:dev (default-cli) @ ms-bucket ---
+[INFO] Invoking resources:3.3.1:resources (default-resources) @ ms-bucket
+[INFO] Copying 5 resources from src/main/resources to target/classes
+[INFO] Invoking quarkus:3.26.1:generate-code (default) @ ms-bucket
+[INFO] Invoking compiler:3.13.0:compile (default-compile) @ ms-bucket
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] Invoking resources:3.3.1:testResources (default-testResources) @ ms-bucket
+[INFO] skip non existing resourceDirectory /Users/admin/DevelopmentRCM/KPLIAN/BACKEND/ms-bucket/src/test/resources
+[INFO] Invoking quarkus:3.26.1:generate-code-tests (default) @ ms-bucket
+[INFO] Invoking compiler:3.13.0:testCompile (default-testCompile) @ ms-bucket
+[INFO] No sources to compile
+[WARNING] [io.quarkus.deployment.dev.DevModeCommandLineBuilder] Changed debug port to 60415 because of a port conflict
+Listening for transport dt_socket at address: 60415
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  6.858 s
+[INFO] Finished at: 2026-04-04T08:33:28-04:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal io.quarkus.platform:quarkus-maven-plugin:3.26.1:dev (default-cli) on project ms-bucket: Failed to run: Dev mode process did not complete successfully -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
